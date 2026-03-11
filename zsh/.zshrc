@@ -12,7 +12,7 @@ done
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/cookie/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -71,9 +71,14 @@ ZSH_THEME="agnoster"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="%m/%d/%YT%M:%H:%S %z"
+HISTSIZE=50000
+SAVEHIST=1000000
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
+#export ZSH_CUSTOM="${DOTFILES_DIR}/zsh/oh-my-zsh"
+export ZSH_CUSTOM="${DOTFILES_DIR}/zsh"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -81,23 +86,36 @@ ZSH_THEME="agnoster"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  argocd
+  autoenv
   brew
   colored-man-pages
   colorize
   compleat
   cp
   docker
+  gcloud
   git
   github
   gitignore
+  helm
+  history
+  kind
+  kubectl
+  kubectx
   macos
+  mosh
+  opentofu
   pip
-  python
   profiles
-  vagrant
+  python
+  safe-paste
+  ssh
+  terraform
+  thefuck
+  tldr
+  tmux
 )
-
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -125,11 +143,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-. "$HOME/.local/bin/env"
+if [ -f "${HOME}/.local/bin/env" ] ; then . "$HOME/.local/bin/env" ; fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Load Completions
-source <(sops completion zsh)
+# == Comletion Setup
+# Set completion paths
+#fpath=(${DOTFILES_DIR}/zsh/completions $fpath)
+
+#source $ZSH/oh-my-zsh.sh
+source ${HOME}/.oh-my-zsh/oh-my-zsh.sh

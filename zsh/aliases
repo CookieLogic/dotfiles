@@ -1,1 +1,6 @@
 alias ls='ls -Ch --color'
+alias vim=/opt/homebrew/bin/nvim
+alias k=kubectl
+alias kctx="/opt/homebrew/bin/kubectx"
+alias g=git
+alias dump_history='tail -n 1000 $ZSH_CUSTOM/.zsh_history'
