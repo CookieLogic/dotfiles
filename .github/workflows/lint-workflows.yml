@@ -1,0 +1,25 @@
+name: lint-workflows
+
+on:
+  pull_request:
+  merge_group:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  lint-workflows:
+    name: Lint and harden workflows
+    if: github.repository == 'magicproduct/repo-template-personal'
+    runs-on: gh-4cpu-runner-mles-sudo
+    permissions:
+      contents: read
+      id-token: write # OIDC for the action to install magicctl
+    steps:
+      - uses: chainguard-actions/actions-checkout@d1f1061cdaee56aa3a3bc3deb86b67b1db772dd6 # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: magicproduct/lint-workflows-action@30f926a67d23d891209df16d2a82dee41ea340d2 # v1.2.2
+        with:
+          chainguard-gate: warn

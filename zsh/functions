@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# vi set syntax=zsh
+
+newalias() {
+  echo "$ZD"
+  ALIASES="$ZD/aliases"
+  if [[ ! -f "$ALiASES" ]] ; then
+    touch "$ALIASES"
+    echo "Created $ALIASES" >2
+  fi
+
+  N_ALIAS=""
+  N_CMD=""
+  if [ $# -eq 2 ] && [[ "$2" == "-" ]]; then
+    N_ALIAS="$1"
+    echo "Using STDIN" >2
+    read N_CMD
+  elif [ $# -gt 1 ] ; then
+    N_ALIAS="$1"
+    N_CMD="${@:2}"
+  else
+    cat <<EOF_USAGE
+      Invalid arguments
+      Usage:
+        echo "my command over STDIN" | $0 ALIAS_NAME -
+        $0 ALIAS_NAME - <<EOF
+          CMD
+        EOF
+        $0 ALIAS_NAME my command over arguments
+        $0 ALIAS_NAME "my command in a string"
+EOF_USAGE
+    exit 1
+  fi
+
+  echo "alias '${N_ALIAS}'='${N_CMD}'" >>"$ALIASES"
+}
+

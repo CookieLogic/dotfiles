@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/opt/homebrew/bin/bash
 
 ACTION="${1}"
 DOTFILES_DIR="${2:-$PWD}"

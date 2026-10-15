@@ -1,0 +1,49 @@
+name: Code Review
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  review:
+    name: Run code review
+    if: |
+      github.repository == 'magicproduct/repo-template-personal' &&
+      github.actor != 'dependabot[bot]' &&
+      !contains(github.event.pull_request.title, '[skip-review]') &&
+      !contains(github.event.pull_request.title, '[WIP]') &&
+      !contains(github.event.pull_request.labels.*.name, 'skip-code-review') &&
+      !contains(github.event.pull_request.labels.*.name, 'skip-claude-review') &&
+      github.event.pull_request.draft == false
+    runs-on: gh-code-review-runner
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: chainguard-actions/actions-checkout@d1f1061cdaee56aa3a3bc3deb86b67b1db772dd6 # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Multi-model code review
+        uses: magicproduct/code-review-action@553abd380b2f4af0d6d6e5f522fa7ae1e7878b56 # v1.19.0
+
+  # Stable required-check name, decoupled from the review job's implementation/version.
+  claude-review:
+    name: claude-review
+    needs: review
+    if: always() && github.repository == 'magicproduct/repo-template-personal'
+    runs-on: gh-nano-runner
+    timeout-minutes: 1
+    steps:
+      - name: Preserve the required review check
+        if: needs.review.result != 'success' && needs.review.result != 'skipped'
+        run: exit 1
