@@ -359,6 +359,36 @@ prompt_terraform() {
   prompt_segment magenta yellow "TF: $terraform_info"
 }
 
+## Window title
+# Prevent oh-my-zsh from overriding the title
+DISABLE_AUTO_TITLE="true"
+
+_cookie_tab_title=""
+
+set_tab_title() {
+  if [[ "$(command git rev-parse --is-inside-work-tree 2>/dev/null)" = "true" ]]; then
+    local repo_root repo_name parent_dir branch dirty
+    repo_root=$(command git rev-parse --show-toplevel 2>/dev/null)
+    repo_name=${repo_root:t}
+    parent_dir=${repo_root:h:t}
+    branch=$(command git symbolic-ref --short HEAD 2>/dev/null) \
+      || branch=$(command git rev-parse --short HEAD 2>/dev/null)
+    [[ -n $(command git status --porcelain 2>/dev/null) ]] && dirty='*'
+    _cookie_tab_title="${parent_dir}/${repo_name}  ${branch}${dirty}"
+  else
+    _cookie_tab_title="${PWD/#$HOME/~}"
+  fi
+  #print -Pn "\e]1;${_cookie_tab_title}\a"
+}
+
+hold_tab_title() {
+  #print -Pn "\e]1;${_cookie_tab_title}\a"
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd set_tab_title
+add-zsh-hook preexec hold_tab_title
+
 ## Main prompt
 build_prompt() {
   RETVAL=$?

@@ -1,4 +1,4 @@
-#compdef magicctl
+#compdef magicctl mctl
 compdef _magicctl magicctl
 
 # zsh completion for magicctl                             -*- shell-script -*-

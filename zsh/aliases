@@ -1,6 +1,43 @@
-alias ls='ls -Ch --color'
-alias vim=/opt/homebrew/bin/nvim
+# Infra Aliases
 alias k=kubectl
 alias kctx="/opt/homebrew/bin/kubectx"
+
+# Dir Aliases
+alias ls='ls -Ch --color'
+alias cdd='cd $ZSH_CUSTOM'
+
+# `lsof` Aliases
+# Surprisingly dynamic tool when everything is a file descriptor
+alias  ls-ssh-connections='lsof -nP -iTCP -sTCP:ESTABLISHED | grep -i ssh'
+alias ls-open-ports='lsof -nP -iTCP -sTCP:LISTEN'
+
+# Vim Aliases
+alias vim=/opt/homebrew/bin/nvim
+alias vimaliases='vim $ZSH_CUSTOM/aliases'
+alias vim-aliases=vimalias
+
+# Git Aliases
 alias g=git
+gclone() { git clone "$@" && git -C "${@: -1}" maintenance start; }
+alias cdgroot='git rev-parse --show-toplevel'
+alias cdgh='$(cdgroot)/.github'
+alias cdghw='$(cdgroot)/workflows'
+
+# GCloud Aliases
+alias gcloud-reauth='rm ~/.config/gcloud/application_default_credentials.json && gcloud auth login --update-adc'
+
+# Misc Aliases
 alias dump_history='tail -n 1000 $ZSH_CUSTOM/.zsh_history'
+alias brew-sync='brew bundle --file ~/.brewfiles/Brewfile.cookie --file ~/.brewfiles/Brewfile.magicai'
+alias 'mctl-new'='mctl claude new'
+alias 'm'='mctl'
+alias mauth='mctl util auth'
+alias dig-short='dig +noall +answer || echo "(error)" | awk "{if ($0==\"\") print \"(empty)\"; else print}"'
+
+# DevEx aliases
+alias dcx='TERM=xterm-256color mctl devcontainer'
+alias dbx='TERM=xterm-256color mctl devbox'
+dcx-ai() { ssh -t seth-quarter "bash -lic 'ai-session $*'"; }
+dcx-ai-test() { ssh -t seth-quarter-ai "bash -lic 'ai-session $*'"; }
+dcx-mux() { ssh -t $1 "bash -lic 'ai-session ${1[@]:1}'"; }
+alias dvx='TERM=xterm-256color mctl devbox'
