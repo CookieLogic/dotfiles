@@ -1,6 +1,121 @@
-[push]
-  default = current
-
+# This is Git's per-user configuration file.
 [user]
-	email = cooker52@gmail.com
 	name = Seth Cook
+	email = seth@magic.dev
+	signingkey = /Users/seth/.ssh/id_ed25519.pub
+
+[includeIf "hasconfig:remote.*.url:git@github.com*:magicproduct/**"]
+  path = ~/.gitconfig.magicproduct.inc
+  # Signing: pick ONE of the two below (or neither to disable signing).
+  #   sign.inc         — full rotation flow w/ ledger + git aliases. Use when
+  #                      SmallStep mints a fresh keypair on every cert renewal.
+  #   sign-stable.inc  — minimal config. Use when the underlying pubkey is
+  #                      stable across renewals and was uploaded once by hand.
+  path = ~/.gitconfig.magicproduct.sign-stable.inc
+  # path = ~/.gitconfig.magicproduct.sign-stable.inc
+
+
+# Please adapt and uncomment the following lines:
+#	name = Seth Cook
+#	email = seth@9238-WKOETM.(none)
+[gpg "ssh"]
+	allowedSignersFile = /Users/seth/.ssh/allowed_signers
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+	template = /Users/seth/.gitmessage
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[push]
+	autoSetupRemote = true
+[alias]
+	# Branch Management
+	br = branch
+	delete-remote-branch = "!f() { git push origin --delete $1 && git fetch origin --prune ; }; f"
+	cob = checkout -b
+
+	# Commit Management
+	amend = commit --amend
+	chm = !git fetch origin && git checkout main && git pull
+	ci = commit
+	cia = commit -a
+	co = checkout
+
+	# Log Views
+	l = "!f() { if [ $# -gt 0 ] ; then git log -$1 ; else git log ; fi }; f"
+	ll = log
+	ls = log --oneline
+	lbr = log --graph --oneline --simplify-by-decoration --branches --topo-order
+	lsf = diff --name-only HEAD
+	lsfh = diff --name-only HEAD~ HEAD
+
+	# GitHub
+	pr = !gh pr create -f
+	ppr = !git push && gh pr create -f
+	pr-nomerge = pr -l no_merge
+	ppr-nomerge = ppr -l no_merge
+	pr-doc = pr -l documentation
+	ppr-doc = ppr -l documentation
+	pr-tf = pr -l terraform
+	ppr-tf = ppr -l terraform
+	pr-bug = pr -l bug
+	ppr-bug = ppr -l bug
+
+	# Misc
+	st = status
+	s = st
+	d = diff
+	dh = diff HEAD~1
+	p = push
+	unstage = reset HEAD --
+	push-amend = push --force-with-lease
+	sub-full-init = submodule update --init --recursive
+	stack = "! git-spice"
+	stk = stack
+	pl = pull
+
+[pull]
+	rebase = true
+[maintenance]
+	repo = /Users/seth/dev/repos/scratch
+	repo = /Users/seth/dev/repos/slackbots
+	repo = /Users/seth/dev/repos/downstairs-dawgs/clacks
+	repo = /Users/seth/dev/repos/magic-sandbox-security/test-cookie-jar
+	repo = /Users/seth/dev/repos/magic-sandbox-security/test-octo-sts
+	repo = /Users/seth/dev/repos/magicproduct/data
+	repo = /Users/seth/dev/repos/magicproduct/dev-environments
+	repo = /Users/seth/dev/repos/magicproduct/grafana-dashboards
+	repo = /Users/seth/dev/repos/magicproduct/helm-magic-kuberay-cluster
+	repo = /Users/seth/dev/repos/magicproduct/inference-compute-cluster
+	repo = /Users/seth/dev/repos/magicproduct/infra-agents
+	repo = /Users/seth/dev/repos/magicproduct/infra-utils
+	repo = /Users/seth/dev/repos/magicproduct/mforge
+	repo = /Users/seth/dev/repos/magicproduct/mnet
+	repo = /Users/seth/dev/repos/magicproduct/node-health-checks
+	repo = /Users/seth/dev/repos/magicproduct/product
+	repo = /Users/seth/dev/repos/magicproduct/sandboxes
+	repo = /Users/seth/dev/repos/magicproduct/terraform
+	repo = /Users/seth/dev/repos/magicproduct/tf-gcp-modules
+	repo = /Users/seth/dev/repos/magicproduct/tf-infra-modules
+	repo = /Users/seth/dev/repos/magicproduct/tf-k8s-modules
+	repo = /Users/seth/dev/repos/magicproduct/tflint-ruleset-google
+	repo = /Users/seth/dev/repos/magicproduct/useful-scripts
+	repo = /Users/seth/dev/repos/magicproduct/website
+	repo = /Users/seth/dev/repos/NoBakeCreations/GateKeeper
+	repo = /Users/seth/dev/repos/OzTamir/broke
+	repo = /Users/seth/dev/repos/magicproduct/workload-operator
+[url "github-magic:magicproduct/"]
+	insteadOf = git@github.com:magicproduct/
+	insteadOf = org-98712826@github.com:magicproduct/
+	insteadOf = https://github.com/magicproduct/
+[url "ssh://github-magic/magicproduct/"]
+	insteadOf = ssh://git@github.com/magicproduct/
+	insteadOf = ssh://org-98712826@github.com/magicproduct/
+[credential]
+	helper = 
+[url "git@github.com:"]
+	insteadOf = https://github.com/

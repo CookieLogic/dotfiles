@@ -1,0 +1,2 @@
+autoload -U +X bashcompinit && bashcompinit
+complete -C /opt/homebrew/bin/git-spice git-spice

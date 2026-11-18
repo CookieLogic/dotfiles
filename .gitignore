@@ -1,4 +1,4 @@
-.DS_STORE
 zsh/.zcompdump*
 zsh/.zsh_history
-zsh/.zsh_sessions/
+zsh/.zsh_sessions/*
+zsh/.zshrc.bck
