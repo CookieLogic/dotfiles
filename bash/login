@@ -12,3 +12,9 @@ fi
 # set PATH so it includes user's private bin directories
 DOTFILES_REPO_SRC_DIR="$HOME/.dotfiles"
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# Homebrew: runs after /etc/profile (macOS path_helper) so it stays ahead of
+# the system paths. Absolute path so it doesn't depend on brew already being on PATH.
+if [ -x /opt/homebrew/bin/brew ] ; then
+    eval "$(/opt/homebrew/bin/brew shellenv bash)"
+fi

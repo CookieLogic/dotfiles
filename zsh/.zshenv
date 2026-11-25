@@ -10,6 +10,7 @@ export DOTFILES_DIR="${HOME}/.dotfiles"
 export DD="$DOTFILES_DIR"
 export ZDOTDIR="${DOTFILES_DIR}/zsh"
 
+<<<<<<< Updated upstream
 # Shortcuts
 export ZD="$ZDOTDIR"
 export ZDE="$ZD/.zshenv"
@@ -29,6 +30,9 @@ PATH="${HOME}/Library/Python/3.7/bin:$PATH"
 PATH="/opt/homebrew/bin:$PATH"
 PATH="${HOME}/.local/bin:$PATH"
 export PATH="$PATH"
+=======
+# PATH is configured in $ZDOTDIR/.zprofile (must run after macOS path_helper)
+>>>>>>> Stashed changes
 
 export PYTHONPATH="${HOME}/Library/Python/3.7/lib"
 
@@ -42,7 +46,14 @@ export EDITOR=/opt/homebrew/bin/nvim
 export PAGER=less
 
 # The next line updates PATH for the Google Cloud SDK.
+<<<<<<< Updated upstream
 if [ -f '${HOME}/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/cookie/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '${HOME}/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/cookie/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+=======
+if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
+>>>>>>> Stashed changes

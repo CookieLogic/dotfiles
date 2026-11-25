@@ -2,6 +2,6 @@
 # Keep only global configurations in this file; per shell configurations belong
 #  in the appropriate Shell configuration directory
 
-export PATH="${PATH}:~/bin"
+export PATH="${PATH}:${HOME}/bin"
 export PATH="${PATH}:/Users/cookie/Library/Python/3.7/bin"
 export EDITOR=vim
